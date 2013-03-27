@@ -69,10 +69,10 @@ class WordPress_Sniffs_WhiteSpace_ControlStructureSpacingSniff implements PHP_Co
     {
         $tokens = $phpcsFile->getTokens();
         
-        if ($tokens[$stackPtr + 1]['code'] !== T_WHITESPACE ) {
-            $error = 'Space after opening control structure is required';
-            $phpcsFile->addError($error, $stackPtr);
-        }
+        // if ($tokens[$stackPtr + 1]['code'] !== T_WHITESPACE ) {
+        //     $error = 'Space after opening control structure is required';
+        //     $phpcsFile->addError($error, $stackPtr);
+        // }
 
         if (isset($tokens[$stackPtr]['scope_closer']) === false) {
             return;
@@ -83,11 +83,11 @@ class WordPress_Sniffs_WhiteSpace_ControlStructureSpacingSniff implements PHP_Co
         
         $openBracket = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
 
-        if (($stackPtr + 1) === $openBracket) {
-            // Checking this: $value = my_function[*](...).
-            $error = 'No space before opening parenthesis is prohibited';
-            $phpcsFile->addError($error, $stackPtr);
-        }
+        // if (($stackPtr + 1) === $openBracket) {
+        //     // Checking this: $value = my_function[*](...).
+        //     $error = 'No space before opening parenthesis is prohibited';
+        //     $phpcsFile->addError($error, $stackPtr);
+        // }
         
         if ($tokens[($openBracket + 1)]['code'] !== T_WHITESPACE && $tokens[($openBracket + 1)]['code'] !== T_CLOSE_PARENTHESIS) {
             // Checking this: $value = my_function([*]...).
@@ -115,24 +115,24 @@ class WordPress_Sniffs_WhiteSpace_ControlStructureSpacingSniff implements PHP_Co
         
 
         $firstContent = $phpcsFile->findNext(T_WHITESPACE, ($scopeOpener + 1), null, true);
-        if ($tokens[$firstContent]['line'] !== ($tokens[$scopeOpener]['line'] + 1) && $tokens[$firstContent]['code'] != T_CLOSE_TAG) {
-            $error = 'Blank line found at start of control structure';
-            $phpcsFile->addError($error, $scopeOpener);
-        }
+        // if ($tokens[$firstContent]['line'] !== ($tokens[$scopeOpener]['line'] + 1) && $tokens[$firstContent]['code'] != T_CLOSE_TAG) {
+        //     $error = 'Blank line found at start of control structure';
+        //     $phpcsFile->addError($error, $scopeOpener);
+        // }
 
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($scopeCloser - 1), null, true);
-        if ($tokens[$lastContent]['line'] !== ($tokens[$scopeCloser]['line'] - 1)) {
-            $errorToken = $scopeCloser;
-            for ($i = ($scopeCloser - 1); $i > $lastContent; $i--) {
-                if ($tokens[$i]['line'] < $tokens[$scopeCloser]['line'] && $tokens[$firstContent]['code'] != T_OPEN_TAG) {
-
-                    $error = 'Blank line found at end of control structure';
-                    $phpcsFile->addError($error, $i);
-                    break;
-                }
-            }
-
-        }
+        // if ($tokens[$lastContent]['line'] !== ($tokens[$scopeCloser]['line'] - 1)) {
+        //     $errorToken = $scopeCloser;
+        //     for ($i = ($scopeCloser - 1); $i > $lastContent; $i--) {
+        //         if ($tokens[$i]['line'] < $tokens[$scopeCloser]['line'] && $tokens[$firstContent]['code'] != T_OPEN_TAG) {
+        // 
+        //             $error = 'Blank line found at end of control structure';
+        //             $phpcsFile->addError($error, $i);
+        //             break;
+        //         }
+        //     }
+        // 
+        // }
 
         $trailingContent = $phpcsFile->findNext(T_WHITESPACE, ($scopeCloser + 1), null, true);
         if ($tokens[$trailingContent]['code'] === T_ELSE) {
